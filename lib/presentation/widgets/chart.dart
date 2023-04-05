@@ -1,15 +1,17 @@
-import 'package:expense_planner/presentation/widgets/chart_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
 import 'package:expense_planner/data/models/transaction.dart';
+import 'package:expense_planner/presentation/widgets/chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
 
-  const Chart({Key? key, required this.recentTransactions}) : super(key: key);
+  const Chart({
+    Key? key,
+    required this.recentTransactions,
+  }) : super(key: key);
 
   List<Map<String, Object>> get groupedTransactions =>
       List.generate(7, (index) {
@@ -26,7 +28,7 @@ class Chart extends StatelessWidget {
         }
 
         return {'day': DateFormat.E().format(weekDay)[0], 'amount': amount};
-      });
+      }).reversed.toList();
 
   double get total => groupedTransactions.fold(
         0.0,

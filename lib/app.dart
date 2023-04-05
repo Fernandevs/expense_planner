@@ -19,7 +19,7 @@ class ExpensePlanner extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -28,7 +28,7 @@ class ExpensePlanner extends StatelessWidget {
         textTheme: ThemeData.light().textTheme.copyWith(
               titleMedium: const TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -60,13 +60,13 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     setState(() {
       final transaction = Transaction(
         id: const Uuid().v4(),
         title: title,
         amount: amount,
-        date: DateTime.now(),
+        date: chosenDate,
       );
 
       _userTransactions.add(transaction);
@@ -74,6 +74,12 @@ class _HomePageState extends State<HomePage> {
       if (kDebugMode) {
         print(transaction);
       }
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
     });
   }
 
@@ -102,12 +108,13 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              child: Chart(recentTransactions: _recentTransactions),
+            Chart(recentTransactions: _recentTransactions),
+            TransactionList(
+              transactions: _userTransactions,
+              deleteTransactionHandler: _deleteTransaction,
             ),
-            TransactionList(transactions: _userTransactions),
           ],
         ),
       ),
