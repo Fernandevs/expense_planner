@@ -8,6 +8,11 @@ class Transaction {
     required this.id,
     required this.title,
     required this.amount,
-    required this.date
+    required this.date,
   });
+
+  @override
+  String toString() {
+    return 'Transaction{\nid: $id,\ntitle: $title,\namount: $amount,\ndate: $date}';
+  }
 }
